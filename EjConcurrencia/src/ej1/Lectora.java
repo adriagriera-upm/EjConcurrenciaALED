@@ -2,12 +2,19 @@ package ej1;
 
 public class Lectora extends Thread{
 	
-	Dato d;
+	Dato dato;
 	
+	public Lectora(Dato dato) {
+		
+		this.dato=dato;
+	}
 	
 	@Override
 	public void run() {
-		System.out.println(d.getDato());
+		for (int i = 0; i < 100; i++) {
+			System.out.println(dato.getDato());
+		}
+		
 	}
 	
 	

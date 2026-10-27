@@ -2,11 +2,18 @@ package ej1;
 
 public class  Escritora extends Thread {
 	
-	Dato d;
+	Dato dato;
+	
+	public Escritora(Dato dato) {
+		this.dato=dato;
+	}
 
 	@Override
 	public void run() {
-		int dato = d.getDato();
+		
+		for (int i = 0; i <100; i++) {
+			dato.setDato((int) Math.random()*10000);
+		}
 		
 	}
 	
