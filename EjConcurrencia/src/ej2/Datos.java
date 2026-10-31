@@ -11,7 +11,7 @@ public class Datos {
 		iniciarLectura(nombreLectora);
 		//2. Selecciona qué dato lee primero y cuál el segundo
 		int primero = (int) Math.round(Math.random() * 2);
-		int segundo = 2;
+		int segundo = 3 - primero;
 		
 		//TODO completar que la lectura y escritura de los dos enteros sea independiente (métodos synchronized separados?)
 		
