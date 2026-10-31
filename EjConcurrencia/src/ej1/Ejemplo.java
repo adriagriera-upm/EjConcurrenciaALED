@@ -14,8 +14,9 @@ public class Ejemplo {
 			e.start();
 			Thread l = new Lectora(d,"l" + i);
 			l.start();
-		
+			
 		}
+		
 		
 	}
 
