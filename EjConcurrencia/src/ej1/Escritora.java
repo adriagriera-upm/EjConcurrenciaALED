@@ -3,18 +3,19 @@ package ej1;
 public class  Escritora extends Thread {
 	
 	Dato dato;
+	String nombreEscritora;
 	
-	public Escritora(Dato dato) {
+	public Escritora(Dato dato, String nombreEscritora) {
 		this.dato=dato;
+		this.nombreEscritora=nombreEscritora;
 	}
 
 	@Override
 	public void run() {
-		
-		for (int i = 0; i <100; i++) {
-			dato.setDato((int) Math.random()*10000);
+		try {
+			dato.escribirDato(nombreEscritora);
+		} catch (InterruptedException e) {
 		}
-		
 	}
 	
 	
