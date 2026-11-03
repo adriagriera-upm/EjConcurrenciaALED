@@ -6,7 +6,7 @@ public class Datos {
 	private boolean[] escribiendo = {false,false};
 	
 	
-	public synchronized void leerDato(String nombreLectora) throws InterruptedException {
+	public void leerDato(String nombreLectora) throws InterruptedException {
 		int primero = (int) (Math.round(Math.random()));
 		int segundo = (1 - primero);
 		//1. Lee el primer dato y libera el cerrojo
