@@ -13,6 +13,7 @@ public class  Escritora extends Thread {
 	@Override
 	public void run() {
 		try {
+			
 			datos.escribirDato(nombreEscritora);
 		} catch (InterruptedException e) {
 		}

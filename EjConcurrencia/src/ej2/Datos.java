@@ -2,55 +2,61 @@ package ej2;
 
 public class Datos {
 	
-	private int[] datos;
-	private boolean escribiendo = false;
+	private int[] datos = new int[2];
+	private boolean[] escribiendo = {false,false};
 	
 	
 	public synchronized void leerDato(String nombreLectora) throws InterruptedException {
-		//1. Empieza a leer si ninguna hebra está escribiendo el dato, si no se pone en espera
-		iniciarLectura(nombreLectora);
-		//2. Selecciona qué dato lee primero y cuál el segundo
-		int primero = (int) Math.round(Math.random() * 2);
-		int segundo = 3 - primero;
-		
-		//TODO completar que la lectura y escritura de los dos enteros sea independiente (métodos synchronized separados?)
-		
-		//3. Termina de leer
+		int primero = (int) (Math.round(Math.random()));
+		int segundo = (1 - primero);
+		//1. Lee el primer dato y libera el cerrojo
+		iniciarLectura(nombreLectora,primero);
+		System.out.println("El primero dato leído por la hebra " + nombreLectora + " es el de la posición " + primero + ", con valor: " + datos[primero]);
 		notifyAll();
-		System.out.println(nombreLectora + " ha terminado de leer.");
+		System.out.println(nombreLectora + " ha terminado de leer su primer dato.");
+		
+		//2. Lee el segundo dato y libera el cerrojo
+		iniciarLectura(nombreLectora,segundo);
+		System.out.println("El segundo dato leído por la hebra " + nombreLectora + " es el de la posición " + segundo + ", con valor: " + datos[segundo]);
+		notifyAll();
+		System.out.println(nombreLectora + " ha terminado de leer su segundo dato.");
 		
 	}
 	
-	public synchronized void iniciarLectura(String nombreLectora) throws InterruptedException{
+	public synchronized void iniciarLectura(String nombreLectora, int index) throws InterruptedException {
 		
-		while(escribiendo) {
+		while(escribiendo[index]) {
 			System.out.println("Lectora " + nombreLectora + " en espera.");
 			wait();
-			
 		}
-		System.out.println("Lectora " + nombreLectora + " inicia lectura");
+		
+		System.out.println("Lectora " + nombreLectora + " inicia lectura del dato de la posición " + index);
+		
 	}
 	
+	
 	public synchronized void escribirDato(String nombreEscritora) throws InterruptedException {
-		//1. Empieza a escribir si ninguna hebra está leyendo el dato, si no se pone en espera
-		iniciarEscritura(nombreEscritora);
-		//2. Selecciona cuál de los dos datos va a escribir
-		int escrito = (int) Math.round(Math.random() * 2);
 		
-		escribiendo = false;
-		System.out.println(nombreEscritora + " ha terminado de escribir.");
+		//1. Selecciona cuál de los dos datos va a escribir e inicia la escriptura de este dato
+		int index = (int) (Math.round(Math.random()));
+		iniciarEscritura(nombreEscritora,index);
+		this.datos[index] = (int) (Math.random()*10000);
+		System.out.println("Nuevo valor del dato en la posición " + index + ": " +  datos[index]);
+		escribiendo[index] = false;
+		//2. Termina de escribir y libera el cerrojo
+		System.out.println(nombreEscritora + " ha terminado de escribir " + "en la posición " + index);
 		notifyAll();
 	}
 
-
-	private void iniciarEscritura(String nombreEscritora) throws InterruptedException {
-		while(escribiendo) {
+	private void iniciarEscritura(String nombreEscritora, int index) throws InterruptedException {
+		while(escribiendo[index]) {
 			System.out.println("Lectora " + nombreEscritora + " en espera.");
 			wait();
 		}
-		escribiendo = true;
-		System.out.println("Escritora " + nombreEscritora + " inicia escritura");
+		escribiendo[index] = true;
+		System.out.println("Escritora " + nombreEscritora + " inicia escritura del dato número " + (index) + ", con valor: " + datos[index]);
 		
 		
 	}
+
 }
