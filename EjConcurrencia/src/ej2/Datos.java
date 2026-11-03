@@ -6,22 +6,16 @@ public class Datos {
 	private boolean[] escribiendo = {false,false};
 	
 	
-	public synchronized void leerDato(String nombreLectora) throws InterruptedException {
+	public  void leerDato(String nombreLectora) throws InterruptedException {
 		int primero = (int) (Math.round(Math.random()));
 		int segundo = (1 - primero);
 		//1. Lee el primer dato y libera el cerrojo
 		iniciarLectura(nombreLectora,primero);
-		System.out.println("Lectora " + nombreLectora + " inicia la primera lectura del dato en la posición " + primero);
-		System.out.println("El primero dato leído por la hebra " + nombreLectora + " es el de la posición " + primero + ", con valor: " + datos[primero]);
-		notifyAll();
-		System.out.println(nombreLectora + " ha terminado de leer su primer dato.");
-		
+		primeraLectura(nombreLectora,primero);
 		//2. Lee el segundo dato y libera el cerrojo
 		iniciarLectura(nombreLectora,segundo);
-		System.out.println("Lectora " + nombreLectora + " inicia la segunda lectura del dato en la posición " + segundo);
-		System.out.println("El segundo dato leído por la hebra " + nombreLectora + " es el de la posición " + segundo + ", con valor: " + datos[segundo]);
-		notifyAll();
-		System.out.println(nombreLectora + " ha terminado de leer todos sus datos.");
+		segundaLectura(nombreLectora,segundo);
+		
 		
 	}
 	
@@ -31,9 +25,20 @@ public class Datos {
 			System.out.println("Lectora " + nombreLectora + " en espera.");
 			wait();
 		}
-		
-		
-		
+	}
+	
+	public void segundaLectura(String nombreLectora, int segundo) throws InterruptedException{
+		System.out.println("Lectora " + nombreLectora + " inicia la segunda lectura del dato en la posición " + segundo);
+		System.out.println("El segundo dato leído por la hebra " + nombreLectora + " es el de la posición " + segundo + ", con valor: " + datos[segundo]);
+		notifyAll();
+		System.out.println(nombreLectora + " ha terminado de leer todos sus datos.");
+	}
+	
+	public synchronized void primeraLectura(String nombreLectora, int primero) throws InterruptedException{
+		System.out.println("Lectora " + nombreLectora + " inicia la primera lectura del dato en la posición " + primero);
+		System.out.println("El primero dato leído por la hebra " + nombreLectora + " es el de la posición " + primero + ", con valor: " + datos[primero]);
+		notifyAll();
+		System.out.println(nombreLectora + " ha terminado de leer su primer dato.");
 	}
 	
 	
