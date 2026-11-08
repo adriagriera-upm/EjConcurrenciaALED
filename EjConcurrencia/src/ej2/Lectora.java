@@ -16,7 +16,7 @@ public class Lectora extends Thread{
 		try {
 			datos.leerDato(nombreLectora);
 		} catch (InterruptedException e) {
-			
+			return;
 		}
 		
 	}

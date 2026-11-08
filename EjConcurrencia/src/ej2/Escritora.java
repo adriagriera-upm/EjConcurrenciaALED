@@ -16,6 +16,7 @@ public class  Escritora extends Thread {
 			
 			datos.escribirDato(nombreEscritora);
 		} catch (InterruptedException e) {
+			return;
 		}
 	}
 	
