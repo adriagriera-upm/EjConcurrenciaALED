@@ -1,10 +1,11 @@
 package ej4;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Buffer {
 	
-	Queue<Integer> buffer;
+	Queue<Integer> buffer = new LinkedList<>();
 	
 	public synchronized void llenarBuffer(String nombreProductora) {
 		
@@ -16,7 +17,7 @@ public class Buffer {
 				
 			}
 		
-		int rand = (int) Math.random()*10000;
+		int rand = (int) (Math.random()*10000);
 		System.out.println("Añadiendo valor " + rand + " al buffer (productora: " + nombreProductora + ")");
 		buffer.offer(rand);
 		notifyAll();
@@ -28,7 +29,7 @@ public class Buffer {
 	public synchronized void leerBuffer(String nombreConsumidora) {
 		
 		try {
-		while(buffer.size() <= 0) {
+		while(buffer.size() == 0) {
 			
 				wait();
 				System.out.println("La consumidora " + nombreConsumidora + " sigue esperando porque el buffer sigue vacío.");
