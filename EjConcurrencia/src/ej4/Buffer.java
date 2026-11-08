@@ -11,7 +11,6 @@ public class Buffer {
 		
 		try {
 			while(buffer.size() >= 10) {
-			
 				wait();
 				System.out.println("La productora " + nombreProductora + " sigue esperando porque el dato sigue lleno.");
 				
@@ -29,13 +28,11 @@ public class Buffer {
 	public synchronized void leerBuffer(String nombreConsumidora) {
 		
 		try {
-		while(buffer.size() == 0) {
-			
+			while(buffer.size() == 0) {
 				wait();
 				System.out.println("La consumidora " + nombreConsumidora + " sigue esperando porque el buffer sigue vacío.");
-			
 			}
-			System.out.println(nombreConsumidora + "está vaciando eliminando el valor: " + buffer.peek());
+			System.out.println(nombreConsumidora + " está vaciando eliminando el valor: " + buffer.peek());
 			buffer.poll();
 			notifyAll();
 		} catch (InterruptedException e) {

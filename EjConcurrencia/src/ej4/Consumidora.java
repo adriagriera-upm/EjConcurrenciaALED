@@ -12,8 +12,9 @@ public class Consumidora extends Thread{
 
 	@Override
 	public void run() {
-		
-		b.leerBuffer(nombreConsumidora);
-	
+		for (int i = 0; i < 100; i++) {
+			b.leerBuffer(nombreConsumidora);
+		}	
 	}
+	
 }
