@@ -12,9 +12,14 @@ public class Ejemplo {
 			
 			Thread tc = new Consumidora("c" + i,b);
 			Thread tp = new Productora("p" + i,b);
-			
-			tc.start();
 			tp.start();
+			try {
+			Thread.sleep(200);
+			tc.start();
+			Thread.sleep(200);
+			} catch(InterruptedException e){
+				return;
+			}
 		}
 		
 	}
