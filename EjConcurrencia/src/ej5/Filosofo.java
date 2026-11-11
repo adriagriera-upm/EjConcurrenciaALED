@@ -17,30 +17,41 @@ public class Filosofo extends Thread{
 	
 	public synchronized void come() {
 		
-		while(!(derecho.libre && izquierdo.libre)) {
-			
+	
+		if(derecho.libre) {
+			derecho.setLibre(false);
 			try {
-				System.out.println(this.nombre + " se muere de hambre");
-				wait();
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				return;
+			}
+			if(izquierdo.libre) {
+				izquierdo.setLibre(false);
+				System.out.println(nombre + "procede a comer");
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					return;
+				}
+				
+			} else {
+				int i = 0;
+				while(i < 11) {
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						return;
+					}
+					System.out.println(nombre + " se muere de hambre");
+					i++;
+				}
 			}
 		}
-			
-		System.out.println(this.nombre + " procede a comer");
-		try {
-			derecho.setLibre(false);
-			izquierdo.setLibre(false);
-			Thread.sleep(1000);
-			derecho.setLibre(true);
-			izquierdo.setLibre(true);
-			System.out.println(this.nombre + " ha terminado de comer");
-			notifyAll();
-			} catch (InterruptedException e) {
-				return;
-			}
-			
+		
+			 
 	}
+		
+	
 		
 	@Override
 	public void run() {
