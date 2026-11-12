@@ -4,17 +4,20 @@ public class Cubierto {
 	
 	boolean libre = true;
 	
-	public boolean cogerCubierto() {
+	public synchronized boolean cogerCubierto() throws InterruptedException {
 		
-		if(libre) {
-			libre = false;
-			return true;
+		while(!libre) {
+			wait();
 		}
-		return false;
+		
+		libre = false;
+		return !libre; 
+		
 	}
 
-	public void soltarCubierto() {
+	public synchronized void soltarCubierto() {
 		libre = true;
+		notifyAll();
 	}
 	
 }
