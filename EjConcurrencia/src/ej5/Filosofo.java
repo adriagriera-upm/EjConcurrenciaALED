@@ -15,21 +15,37 @@ public class Filosofo extends Thread{
 		
 	}
 	
+	public Cubierto[] OrdenCubiertos() {
+		
+		Cubierto[] cubiertos = new Cubierto[2];
+		
+		int pos1 = (int) Math.round(Math.random());
+		int pos2 = 1 - pos1;
+		
+		cubiertos[pos1] = izquierdo;
+		cubiertos[pos2] = derecho;
+		
+		return cubiertos;
+		
+	}
+	
 	public synchronized void come() {
 		
+		Cubierto[] cubiertos = OrdenCubiertos();
+		
+		
 		try {
-			if(derecho.cogerCubierto()) {
-				Thread.sleep(200);
-				
-					if(izquierdo.cogerCubierto()) {
+			if(cubiertos[0].cogerCubierto()) {
+					Thread.sleep(200);
+					if(cubiertos[1].cogerCubierto()) {
 						System.out.println(nombre + " está comiendo");
 						Thread.sleep(1000);
 						System.out.println(nombre + " ha terminado de comer");
-						izquierdo.soltarCubierto();
-						derecho.soltarCubierto();
+						cubiertos[1].soltarCubierto();
+						cubiertos[0].soltarCubierto();
 					}
 					else {
-					derecho.soltarCubierto();
+					cubiertos[0].soltarCubierto();
 					System.out.println(nombre + " se muere de hambre");
 				}
 			} 
