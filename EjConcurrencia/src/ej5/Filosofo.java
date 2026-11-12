@@ -17,38 +17,25 @@ public class Filosofo extends Thread{
 	
 	public synchronized void come() {
 		
-	
-		if(derecho.libre) {
-			derecho.setLibre(false);
-			try {
+		try {
+			if(derecho.cogerCubierto()) {
 				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				return;
-			}
-			if(izquierdo.libre) {
-				izquierdo.setLibre(false);
-				System.out.println(nombre + "procede a comer");
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					return;
-				}
 				
-			} else {
-				int i = 0;
-				while(i < 11) {
-					try {
-						wait();
-					} catch (InterruptedException e) {
-						return;
+					if(izquierdo.cogerCubierto()) {
+						System.out.println(nombre + " está comiendo");
+						Thread.sleep(1000);
+						System.out.println(nombre + " ha terminado de comer");
+						izquierdo.soltarCubierto();
+						derecho.soltarCubierto();
 					}
+					else {
+					derecho.soltarCubierto();
 					System.out.println(nombre + " se muere de hambre");
-					i++;
 				}
-			}
+			} 
+		} catch(InterruptedException e){
+			return;
 		}
-		
-			 
 	}
 		
 	

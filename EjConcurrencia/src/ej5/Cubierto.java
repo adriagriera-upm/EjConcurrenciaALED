@@ -4,10 +4,17 @@ public class Cubierto {
 	
 	boolean libre = true;
 	
-	public void setLibre(boolean libre) {
-		this.libre = libre;
+	public boolean cogerCubierto() {
+		
+		if(libre) {
+			libre = false;
+			return true;
+		}
+		return false;
 	}
 
-	
+	public void soltarCubierto() {
+		libre = true;
+	}
 	
 }
