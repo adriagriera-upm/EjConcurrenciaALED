@@ -1,34 +1,27 @@
 package ej6;
 
-import java.util.LinkedList;
-import java.util.Queue;
 
 
 public class Marmita { //MONITOR
-	
-	int raciones;
-	Object orden;
-	boolean hayOrden;
-	Queue colaCanibales = new LinkedList<Canibal>();
-	
-	public Marmita() {
-		this.raciones = 0; 
-		this.hayOrden = false;
-	}
+
+	int raciones = 0;
+	boolean hayOrden = false;
+	Canibal comensal = null;
 	
 	
 	public synchronized void comer(Canibal can) {
 		try {
-			colaCanibales.add(can);
-			while(raciones < 1 || colaCanibales.peek() != can) {
-				if(raciones < 1 && colaCanibales.peek() == can && !hayOrden) {
+			while(comensal == null || raciones == 0) { //La hebra se espera si no hay comida y si no es el que ha pedido comer 
+				if(raciones == 0 && !hayOrden) {
+					//Se crea una orden de un caníbal si no hay una previa y tampoco hay comida
+					comensal = can;
 					System.out.println("'¡¡COCINERO COCINA  O TE COMO!!': dice el caníbal " + can.nombre);
 					hayOrden = true;
 					notifyAll();
 				}
 				wait();
 			}
-			colaCanibales.remove();
+			comensal = null;
 			System.out.println("El caníbal " + can.nombre + " procede a comer...");
 			Thread.sleep(Math.round(1000 + Math.random()*2000)); 
 			raciones--;
