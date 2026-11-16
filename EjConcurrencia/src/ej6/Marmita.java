@@ -9,26 +9,30 @@ public class Marmita { //MONITOR
 	Canibal comensal = null;
 	
 	
-	public synchronized void comer(Canibal can) {
+	public  void comer(Canibal can) {
 		try {
-			while(comensal == null || raciones == 0) { //La hebra se espera si no hay comida y si no es el que ha pedido comer 
-				if(raciones == 0 && !hayOrden) {
-					//Se crea una orden de un caníbal si no hay una previa y tampoco hay comida
-					comensal = can;
-					System.out.println("'¡¡COCINERO COCINA  O TE COMO!!': dice el caníbal " + can.nombre);
-					hayOrden = true;
-					notifyAll();
+			synchronized(this) {
+				while(comensal != can || raciones == 0) { //La hebra se espera si no hay comida o si no es el que ha pedido comer 
+					if(raciones == 0 && !hayOrden) {
+						//Se crea una orden de un caníbal si no hay una previa y tampoco hay comida
+						comensal = can;
+						System.out.println("'¡¡COCINERO COCINA  O TE COMO!!': dice el caníbal " + can.nombre);
+						hayOrden = true;
+						notifyAll();
+					}
+					wait();
 				}
-				wait();
 			}
 			comensal = null;
 			System.out.println("El caníbal " + can.nombre + " procede a comer...");
 			Thread.sleep(Math.round(1000 + Math.random()*2000)); 
+			synchronized(this) {
+			comensal = null;
 			raciones--;
 			System.out.println("El caníbal " + can.nombre + " ha comido el estofado");
 			hayOrden = false;
 			notifyAll();
-			
+			}
 		} catch(InterruptedException e) {
 				Thread.currentThread().interrupt();
 		}
