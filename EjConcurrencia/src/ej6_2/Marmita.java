@@ -23,7 +23,7 @@ public class Marmita { //MONITOR
 					}
 					wait();
 				}
-				//Se elimina al primer comensal para que puedan comer luego los otros caníbales
+			//Se elimina al primer comensal para que puedan comer luego los otros caníbales
 			}
 			synchronized(this) {
 				if(comensal == can) {
