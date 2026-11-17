@@ -46,30 +46,30 @@ public class MonitorFumeta {
 					wait();
 			}
 		
-		int primero = (int) Math.round(Math.random()*2);
-		int segundo = 0;
-		
-		switch(primero) {
+			int primero = (int) Math.round(Math.random()*2);
+			int segundo = 0;
 			
-		case 0:
-			segundo = (int) (Math.round(Math.random()) + 1);
-			break;
-		
-		case 1:
-			segundo = (int) (Math.round(Math.random())*2);
-			break;
-		
-		case 2:
-			segundo = (int) Math.round(Math.random());
-			break;
-		}
-		componentes[primero] = true;
-		componentes[segundo] = true;
-		System.out.println("El del estanco ya ha recargado los suministros:");
-		System.out.println("Tabaco-> " + componentes[0] + "; Papel-> " + componentes[1] + "; Tabaco-> " + componentes[2]);
-		notifyAll();
-		
-		
+			switch(primero) {
+				
+				case 0:
+					segundo = (int) (Math.round(Math.random()) + 1);
+					break;
+				
+				case 1:
+					segundo = (int) (Math.round(Math.random())*2);
+					break;
+				
+				case 2:
+					segundo = (int) Math.round(Math.random());
+					break;
+			}
+			
+			componentes[primero] = true;
+			componentes[segundo] = true;
+			System.out.println("El del estanco ya ha recargado los suministros:");
+			System.out.println("Tabaco-> " + componentes[0] + "; Papel-> " + componentes[1] + "; Tabaco-> " + componentes[2]);
+			notifyAll();
+			
 		} catch(InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
@@ -78,7 +78,6 @@ public class MonitorFumeta {
 	public int sumaComponentes() {
 		
 		int hay = 0;
-		
 		for (int i = 0; i < componentes.length; i++) {
 			if(componentes[i]) {
 				hay++;
@@ -88,21 +87,11 @@ public class MonitorFumeta {
 	}
 	
 	public boolean puedeFumar(Fumeta f) {
-		boolean puede = true;;
-		switch(f.tieneInfinitos) {
-		case 0:
-			if(!componentes[1] || !componentes[2]){
-				puede = false;
-			}
-		case 1:
-			if(!componentes[0] || !componentes[2]){
-				puede = false;
-			} 
-		case 2:
-			if(!componentes[1] || !componentes[0]){
-				puede = false;
-			}
-		}
-		return puede;
+	    switch (f.tieneInfinitos) {
+	        case 0: return componentes[1] && componentes[2];
+	        case 1: return componentes[0] && componentes[2];
+	        case 2: return componentes[0] && componentes[1];
+	        default: return false;
+	    }
 	}
 }
