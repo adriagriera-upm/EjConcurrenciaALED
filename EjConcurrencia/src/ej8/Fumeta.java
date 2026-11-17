@@ -3,7 +3,7 @@ package ej8;
 public class Fumeta extends Thread{
 	
 	MonitorFumeta m;
-	int tieneInfinitos; //indica de qué componente tiene infinitos suministros
+	int tieneInfinitos; //indica de qué componente tiene infinitos suministros (índice del array de componentes)
 	String nombre;
 	boolean componenteCogido = false;
 	

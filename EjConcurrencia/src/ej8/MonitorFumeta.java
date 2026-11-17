@@ -5,8 +5,8 @@ package ej8;
 public class MonitorFumeta {
 	
 	boolean[] componentes = new boolean[3];
-	boolean porFavor = false;
-	Fumeta solicitante;
+	Fumeta solicitante = null;
+	boolean yaCogido = false;
 	
 	
 	
@@ -14,26 +14,23 @@ public class MonitorFumeta {
 		
 		try {
 			synchronized(this) {
-					while(!puedeFumar(fumeta) || !fumeta.componenteCogido) {
-						if(componenteLibre() != -1 && componenteLibre() != fumeta.tieneInfinitos) {
+					while(!fumeta.componenteCogido && !puedeFumar(fumeta)) {
+						if(componenteLibre() != -1 && componenteLibre() != fumeta.tieneInfinitos && !yaCogido) {
 							fumeta.componenteCogido = true;
+							yaCogido = true;
 							System.out.println(fumeta.nombre + " ha cogido el componente libre");
+							System.out.println(fumeta.nombre + " pide generosidad");
+							solicitante = fumeta;
+							notifyAll();
 						}
-						if(porFavor && fumeta.tieneInfinitos == componenteSolicitado(solicitante)) {
+	
+						if(solicitante != null && fumeta.tieneInfinitos == componenteSolicitado(solicitante)) {
 							componentes[fumeta.tieneInfinitos] = true;
+							solicitante = null;
 							notifyAll();
 						}	
 						wait();
 					}
-					
-					while(!puedeFumar(fumeta)) {
-						System.out.println(fumeta.nombre + "pide generosidad");
-						solicitante = fumeta;
-						porFavor = true;
-						notifyAll();
-						wait();
-					}
-				
 				System.out.println("El fumeta " + fumeta.nombre + " procede a fumar");
 				
 				notifyAll();
@@ -44,20 +41,6 @@ public class MonitorFumeta {
 			Thread.currentThread().interrupt();
 		}
 	}
-
-	
-	private int componenteSolicitado(Fumeta f) {
-		
-		int c = -1;
-		for (int i = 0; i < componentes.length; i++) {
-			if(componentes[i] == false && !f.componenteCogido) {
-				c = i;
-				break;
-			}
-		}
-		return c;
-	}
-
 
 	public synchronized void darComponentes() {
 		
@@ -78,7 +61,19 @@ public class MonitorFumeta {
 		}
 	}
 	
-	public int componenteLibre() {
+	private int componenteSolicitado(Fumeta f) {
+		
+		int c = -1;
+		for (int i = 0; i < componentes.length; i++) {
+			if(componentes[i] == false && !f.componenteCogido) {
+				c = i;
+				break;
+			}
+		}
+		return c;
+	}
+
+	private int componenteLibre() {
 		
 		int pos = -1;
 		for (int i = 0; i < componentes.length; i++) {
@@ -90,7 +85,7 @@ public class MonitorFumeta {
 		return pos;
 	}
 	
-	public int sumaComponentes() {
+	private int sumaComponentes() {
 		
 		int hay = 0;
 		for (int i = 0; i < componentes.length; i++) {
@@ -101,7 +96,7 @@ public class MonitorFumeta {
 		return hay;
 	}
 	
-	public boolean puedeFumar(Fumeta f) {
+	private boolean puedeFumar(Fumeta f) {
 	    switch (f.tieneInfinitos) {
 	        case 0: return componentes[1] && componentes[2];
 	        case 1: return componentes[0] && componentes[2];
