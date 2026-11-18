@@ -20,7 +20,7 @@ public class Vehiculo extends Thread{
 		
 		try {
 			s.entrarPuente(this.peso,this.ambulancia);
-			Thread.sleep(10000);
+			Thread.sleep(12000);
 			s.salirPuente(this.peso);
 		} catch(InterruptedException e) {
 			Thread.currentThread().interrupt();

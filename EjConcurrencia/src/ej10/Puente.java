@@ -9,14 +9,18 @@ public class Puente {
 		int i = 0;
 		while(true) {
 			
-			int random = (int) Math.round(Math.random());
 			boolean ambulancia = false;
-			if(random == 0) {
+			if(i % 7 == 0) {
 				ambulancia = true;
 			}
-			Vehiculo v = new Vehiculo(s,"v" + i,(int) Math.round(Math.random()*3000),ambulancia);
-			v.start();
+			Vehiculo v = new Vehiculo(s,"v" + i,(int) (1500 + Math.round(Math.random()*4000)),ambulancia);
+			v.start();	
 			i++;
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
 		}
 		
 		

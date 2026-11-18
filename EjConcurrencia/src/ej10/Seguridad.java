@@ -1,7 +1,6 @@
 package ej10;
 
-import java.util.LinkedList;
-import java.util.Queue;
+
 
 
 
@@ -18,7 +17,9 @@ public class Seguridad {
 		
 		try {
 			synchronized(this) {
-				while(peso + pesoActual > LIMITE_PESO || (vehiculosActual+1) > LIMITE_VEHICULOS || (esperaAmbulancias == 0 && !ambulancia)){
+				//Mientras el peso o la cantidad total con el vehículo deque quiere pasar supere el límite y haya ambulancias esperando 
+				//y este vehículo no es una ambulancia, se espera
+				while((peso + pesoActual > LIMITE_PESO || (vehiculosActual+1) > LIMITE_VEHICULOS) && (esperaAmbulancias != 0 && !ambulancia)){
 					if(ambulancia) {
 						esperaAmbulancias++;
 						System.out.println("Una ambulancia está esperando...");
@@ -28,10 +29,11 @@ public class Seguridad {
 				pesoActual += peso;
 				vehiculosActual++;
 				if(!ambulancia) {
-					System.out.println("Pasa un vehículo... -> Peso: " + pesoActual + "; Vehículos ");
-				} else {
-					System.out.println("Pasa una ambulancia...");
+					System.out.println("Pasa un vehículo... -> Peso: " + pesoActual + "; Vehículos: " + vehiculosActual);
+				} else if(ambulancia) {
+					System.out.println("Pasa una ambulancia... -> Peso: " + pesoActual + "; Vehículos: " + vehiculosActual);
 					esperaAmbulancias--;
+					notifyAll();
 				}
 			}
 		} catch(InterruptedException e) {
