@@ -35,7 +35,7 @@ public class Peluqueria {
 				}
 				
 			}
-			int random =(int)  (Math.random()*400);
+			int random =(int) (Math.random()*400);
 			Thread.sleep( random);
 			
 			synchronized(this) {

@@ -7,7 +7,7 @@ public class Main {
 		Peluqueria p = new Peluqueria();
 		
 		int i = 0;
-		while(true) {
+		while(i < 50) {
 			try {
 				Thread.sleep(200); //Buen valor, los logs son legibles y se ven a hebras yéndose
 			} catch (InterruptedException e) {
